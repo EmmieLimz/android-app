@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/provider_nav_graph"
+    app:startDestination="@+id/providerDashboardFragment">
+
+    <fragment
+        android:id="@+id/providerDashboardFragment"
+        android:name="com.nipa.healthcaremobile.dashboard.ProviderDashboardFragment"
+        android:label="Provider Dashboard"
+        tools:layout="@layout/fragment_provider_dashboard" />
+
+    <!-- Removing notifications part for now -->
+    <!--
+    <fragment
+        android:id="@+id/providerNotificationsFragment"
+        android:name="com.nipa.healthcaremobile.notifications.ProviderNotificationsFragment"
+        android:label="Provider Notifications"
+        tools:layout="@layout/fragment_provider_notifications" />
+    <action
+        android:id="@+id/action_providerDashboardFragment_to_providerNotificationsFragment"
+        app:destination="@id/providerNotificationsFragment" />
+    -->
+
+    <action
+        android:id="@+id/action_provider_logout"
+        app:destination="@id/action_global_to_auth_nav_graph" />
+</navigation>

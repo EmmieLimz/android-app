@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_main"
+    app:startDestination="@+id/auth_nav_graph">
+
+    <include app:graph="@navigation/auth_nav_graph" />
+    <include app:graph="@navigation/client_nav_graph" />
+    <include app:graph="@navigation/provider_nav_graph" />
+
+    <!-- Actions to navigate to client and provider graphs from auth (or globally) -->
+    <action
+        android:id="@+id/action_global_to_client_nav_graph"
+        app:destination="@id/client_nav_graph"
+        app:popUpTo="@id/auth_nav_graph"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_global_to_provider_nav_graph"
+        app:destination="@id/provider_nav_graph"
+        app:popUpTo="@id/auth_nav_graph"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_global_to_auth_nav_graph"
+        app:destination="@id/auth_nav_graph"
+        app:popUpTo="@id/nav_main"
+        app:popUpToInclusive="true"/>
+
+</navigation>

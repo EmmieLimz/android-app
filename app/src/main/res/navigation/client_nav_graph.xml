@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/client_nav_graph"
+    app:startDestination="@+id/clientDashboardFragment">
+
+    <fragment
+        android:id="@+id/clientDashboardFragment"
+        android:name="com.nipa.healthcaremobile.dashboard.ClientDashboardFragment"
+        android:label="Client Dashboard"
+        tools:layout="@layout/fragment_client_dashboard" />
+
+    <!-- Assuming clientNotificationsFragment is not yet implemented,
+         we can keep it as a placeholder or remove it.
+         For now, let's update its name to avoid build errors if it's referenced,
+         but acknowledge it's a placeholder. Or better, remove it if no layout/class exists.
+         Given we only created dashboard fragments, let's remove the notification part for now to keep it clean. -->
+    <!--
+    <fragment
+        android:id="@+id/clientNotificationsFragment"
+        android:name="com.nipa.healthcaremobile.notifications.ClientNotificationsFragment"
+        android:label="Client Notifications"
+        tools:layout="@layout/fragment_client_notifications" />
+    <action
+        android:id="@+id/action_clientDashboardFragment_to_clientNotificationsFragment"
+        app:destination="@id/clientNotificationsFragment" />
+    -->
+
+    <action
+        android:id="@+id/action_client_logout"
+        app:destination="@id/action_global_to_auth_nav_graph" />
+</navigation>

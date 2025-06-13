@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "694593872645",
+    "project_id": "healthcaremobile-c1ac1",
+    "storage_bucket": "healthcaremobile-c1ac1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:694593872645:android:ce95807754f21b07990d6c",
+        "android_client_info": {
+          "package_name": "com.nipa.healthcaremobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "694593872645-dni5hp5bgnpjvsd96qjr8812197mmlj1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAtt970ab97o97ggLOscQKKvbngo0EnuM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "694593872645-dni5hp5bgnpjvsd96qjr8812197mmlj1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:694593872645:android:87d0de4fbaa66ca6990d6c",
+        "android_client_info": {
+          "package_name": "com.nipa.healthcaremobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "694593872645-dni5hp5bgnpjvsd96qjr8812197mmlj1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAtt970ab97o97ggLOscQKKvbngo0EnuM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "694593872645-dni5hp5bgnpjvsd96qjr8812197mmlj1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
