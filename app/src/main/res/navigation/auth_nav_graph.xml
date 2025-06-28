@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/welcomeFragment"
-        android:name="com.nipa.healthcaremobile.auth.WelcomeFragment"
+        android:name="com.nipa.healthcareapp.auth.WelcomeFragment"
         android:label="Welcome"
         tools:layout="@layout/fragment_welcome">
         <action

@@ -14,12 +14,11 @@ import com.nipa.healthcaremobile.repository.auth.AuthRepository
 import com.nipa.healthcaremobile.view.auth.AuthViewModelFactory // Assuming AuthViewModelFactory is accessible
 import com.nipa.healthcaremobile.view.auth.LoginActivity
 import com.nipa.healthcaremobile.viewmodel.auth.AuthViewModel
+import com.nipa.healthcaremobile.LoginActivity
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var authViewModel: AuthViewModel
-    private lateinit var welcomeTextView: TextView
-    private lateinit var logoutButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,14 +37,6 @@ class MainActivity : AppCompatActivity() {
         authViewModel = ViewModelProvider(this, factory).get(AuthViewModel::class.java)
         // --- End Temporary Dependency Instantiation ---
 
-        welcomeTextView = findViewById(R.id.tv_welcome_message)
-        logoutButton = findViewById(R.id.btn_logout)
-
-        logoutButton.setOnClickListener {
-            Log.i("MainActivity", "Logout button clicked")
-            authViewModel.logout()
-        }
-
         observeViewModel()
 
         // ViewModel's init block calls checkUserLoggedIn.
@@ -57,9 +48,9 @@ class MainActivity : AppCompatActivity() {
         authViewModel.currentUser.observe(this) { user ->
             if (user != null) {
                 Log.i("MainActivity", "User logged in: \${user.email}")
-                welcomeTextView.text = "Welcome, \${user.email} (Type: \${user.userType})"
-                logoutButton.visibility = View.VISIBLE
-                welcomeTextView.visibility = View.VISIBLE
+                // welcomeTextView.text = "Welcome, \${user.email} (Type: \${user.userType})"
+                // logoutButton.visibility = View.VISIBLE
+                // welcomeTextView.visibility = View.VISIBLE
             } else {
                 Log.i("MainActivity", "User not logged in or has logged out, navigating to LoginActivity.")
                 val intent = Intent(this, LoginActivity::class.java)
@@ -75,10 +66,10 @@ class MainActivity : AppCompatActivity() {
             if (isLoading) {
                 Log.d("MainActivity", "Auth operation in progress...")
                 // You might disable the logout button here, for example
-                logoutButton.isEnabled = false
+                // logoutButton.isEnabled = false
             } else {
                 Log.d("MainActivity", "Auth operation idle.")
-                logoutButton.isEnabled = true
+                // logoutButton.isEnabled = true
             }
         }
     }

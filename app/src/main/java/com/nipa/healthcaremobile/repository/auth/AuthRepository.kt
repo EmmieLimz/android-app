@@ -32,7 +32,7 @@ class AuthRepository(
                     val appUser = User(id = firebaseUser.uid, email = email, userType = userType)
                     userDao.insertUser(appUser)
                     Log.i("AuthRepository", "User registered: \${firebaseUser.uid}, saved to Room.")
-                    AuthResult.Success(firebaseUser = firebaseUser, appUser = appUser)
+                    AuthResult.Success(user = firebaseUser, appUser = appUser)
                 } else {
                     Log.e("AuthRepository", "Firebase user is null after registration")
                     AuthResult.Error(Exception("Firebase user is null after registration"))
@@ -53,9 +53,9 @@ class AuthRepository(
                     // Optionally fetch full appUser from Room here if needed immediately after login
                     // val appUser = userDao.getUserById(firebaseUser.uid)
                     Log.i("AuthRepository", "User logged in: \${firebaseUser.uid}")
-                    AuthResult.Success(firebaseUser = firebaseUser)
+                    AuthResult.Success(user = firebaseUser)
                 } else {
-                     Log.e("AuthRepository", "Firebase user is null after login")
+                    Log.e("AuthRepository", "Firebase user is null after login")
                     AuthResult.Error(Exception("Firebase user is null after login"))
                 }
             } catch (e: Exception) {

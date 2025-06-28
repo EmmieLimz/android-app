@@ -1,23 +1,25 @@
 package com.nipa.healthcaremobile.view.auth
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.nipa.healthcaremobile.R
 import com.nipa.healthcaremobile.persistence.AppDatabase
 import com.nipa.healthcaremobile.repository.auth.AuthRepository
 import com.nipa.healthcaremobile.viewmodel.auth.AuthViewModel
 
-class RegisterActivity : AppCompatActivity() {
+class RegisterFragment : Fragment() {
 
     private lateinit var authViewModel: AuthViewModel
     private lateinit var emailEditText: EditText
@@ -28,31 +30,46 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var errorTextView: TextView
     private lateinit var goToLoginTextView: TextView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
-        Log.d("RegisterActivity", "onCreate called")
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_register, container, false)
+    }
 
-        // --- Temporary Dependency Instantiation (Same as LoginActivity) ---
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.d("RegisterFragment", "onViewCreated called")
+
+        setupViewModel()
+        initViews(view)
+        setupClickListeners()
+        observeViewModel()
+    }
+
+    private fun setupViewModel() {
+        // --- Temporary Dependency Instantiation ---
         val firebaseAuthInstance = FirebaseAuth.getInstance()
-        val appDatabaseInstance = AppDatabase.getInstance(applicationContext)
+        val appDatabaseInstance = AppDatabase.getInstance(requireContext())
         val authRepositoryInstance = AuthRepository(firebaseAuthInstance, appDatabaseInstance.userDao())
-        // AuthViewModelFactory is defined in LoginActivity.kt.
-        // For this to compile if they are in different files without further setup,
-        // AuthViewModelFactory would need to be in its own file and public.
-        // Assuming it's accessible for the purpose of this subtask.
+        // You'll need to make AuthViewModelFactory accessible
         val factory = AuthViewModelFactory(authRepositoryInstance)
         authViewModel = ViewModelProvider(this, factory).get(AuthViewModel::class.java)
         // --- End Temporary Dependency Instantiation ---
+    }
 
-        emailEditText = findViewById(R.id.et_register_email)
-        passwordEditText = findViewById(R.id.et_register_password)
-        confirmPasswordEditText = findViewById(R.id.et_register_confirm_password)
-        registerButton = findViewById(R.id.btn_register)
-        loadingProgressBar = findViewById(R.id.pb_register_loading)
-        errorTextView = findViewById(R.id.tv_register_error)
-        goToLoginTextView = findViewById(R.id.tv_go_to_login)
+    private fun initViews(view: View) {
+        emailEditText = view.findViewById(R.id.et_register_email)
+        passwordEditText = view.findViewById(R.id.et_register_password)
+        confirmPasswordEditText = view.findViewById(R.id.et_register_confirm_password)
+        registerButton = view.findViewById(R.id.btn_register)
+        loadingProgressBar = view.findViewById(R.id.pb_register_loading)
+        errorTextView = view.findViewById(R.id.tv_register_error)
+        goToLoginTextView = view.findViewById(R.id.tv_go_to_login)
+    }
 
+    private fun setupClickListeners() {
         registerButton.setOnClickListener {
             val email = emailEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
@@ -80,47 +97,38 @@ class RegisterActivity : AppCompatActivity() {
 
             if (password != confirmPassword && !password.isEmpty() && !confirmPassword.isEmpty()) {
                 confirmPasswordEditText.error = "Passwords do not match"
-                // Potentially clear the confirmPassword field or both password fields
                 if(valid) confirmPasswordEditText.requestFocus()
                 valid = false
             } else if (!confirmPassword.isEmpty() && password == confirmPassword) {
-                 confirmPasswordEditText.error = null // Clear error if they match
+                confirmPasswordEditText.error = null // Clear error if they match
             }
 
             if (!valid) {
                 return@setOnClickListener
             }
 
-            Log.i("RegisterActivity", "Register button clicked for email: \$email, type: \$userType")
+            Log.i("RegisterFragment", "Register button clicked for email: $email, type: $userType")
             authViewModel.clearAuthError() // Clear previous errors
             errorTextView.visibility = View.GONE // Hide error view explicitly
             authViewModel.register(email, password, userType)
         }
 
         goToLoginTextView.setOnClickListener {
-            Log.i("RegisterActivity", "Go to Login clicked")
-            val intent = Intent(this, LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            startActivity(intent)
-            finish()
+            Log.i("RegisterFragment", "Go to Login clicked")
+            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
         }
-
-        observeViewModel()
     }
 
     private fun observeViewModel() {
-        authViewModel.registrationSuccess.observe(this) { isSuccess ->
+        authViewModel.registrationSuccess.observe(viewLifecycleOwner) { isSuccess ->
             if (isSuccess == true) {
-                Log.i("RegisterActivity", "Registration successful, navigating to LoginActivity.")
-                Toast.makeText(this, "Registration Successful! Please login.", Toast.LENGTH_LONG).show()
-                val intent = Intent(this, LoginActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                startActivity(intent)
-                finish()
+                Log.i("RegisterFragment", "Registration successful, navigating to LoginFragment.")
+                Toast.makeText(context, "Registration Successful! Please login.", Toast.LENGTH_LONG).show()
+                findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
             }
         }
 
-        authViewModel.isLoading.observe(this) { isLoading ->
+        authViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             loadingProgressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
             registerButton.isEnabled = !isLoading
             emailEditText.isEnabled = !isLoading
@@ -129,9 +137,9 @@ class RegisterActivity : AppCompatActivity() {
             goToLoginTextView.isEnabled = !isLoading
         }
 
-        authViewModel.authError.observe(this) { errorMessage ->
+        authViewModel.authError.observe(viewLifecycleOwner) { errorMessage ->
             errorMessage?.let {
-                Log.e("RegisterActivity", "Auth Error: \$it")
+                Log.e("RegisterFragment", "Auth Error: $it")
                 errorTextView.text = it
                 errorTextView.visibility = View.VISIBLE
             } ?: run {
