@@ -14,7 +14,6 @@ import com.nipa.healthcaremobile.repository.auth.AuthRepository
 import com.nipa.healthcaremobile.view.auth.AuthViewModelFactory // Assuming AuthViewModelFactory is accessible
 import com.nipa.healthcaremobile.view.auth.LoginActivity
 import com.nipa.healthcaremobile.viewmodel.auth.AuthViewModel
-import com.nipa.healthcaremobile.LoginActivity
 
 class MainActivity : AppCompatActivity() {
 
